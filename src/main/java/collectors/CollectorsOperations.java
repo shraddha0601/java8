@@ -44,11 +44,25 @@ public class CollectorsOperations {
 
         genderToPeep.forEach((k, v) -> System.out.println("Key: " + k + " Value: " + v));
 
+        //Group people by gender using parallel stream
+        Map<SEX, List<Person>> genderToPeep2 =
+                peeps.parallelStream()
+                        .collect(Collectors.groupingBy(Person::getSex));
+
+        genderToPeep2.forEach((k, v) -> System.out.println("Key: " + k + " Value: " + v));
+
         // Find average age by gender
         Map<SEX, Double> avergaeAge =
                 peeps.stream()
                 .collect(Collectors.groupingBy(Person::getSex, Collectors.averagingInt(Person::getAge)));
         avergaeAge.forEach((k, v) -> System.out.println("Key: " + k + " Value: " + v));
+
+        // Same problem can be solved with parallel streams that can run parallelly
+        Map<SEX, Double> avergaeAge2 =
+                peeps.parallelStream()
+                        .collect(Collectors.groupingBy(Person::getSex, Collectors.averagingInt(Person::getAge)));
+        avergaeAge.forEach((k, v) -> System.out.println("Key: " + k + " Value: " + v));
+        avergaeAge2.forEach((k, v) -> System.out.println("Key: " + k + " Value: " + v));
 
         peeps.stream()
                 .forEach(p -> p.setAge(p.getAge() * 100));
